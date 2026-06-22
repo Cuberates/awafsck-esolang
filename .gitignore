@@ -1,0 +1,4 @@
+# Xcode Debug Symbols
+*.dSYM/
+*.dSYM.zip
+*.o
