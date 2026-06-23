@@ -5,8 +5,8 @@
 
 /**
  * @brief File parser for organizing Awa syntaxes
- * @todo - Transcribe all lines into tokens to be stored in some sort of stack? 
- *       - Perform string parsing using std::string, but still trying to find a much quicker way
+ * @todo - Transcribe all lines into to be stored in some sort of stack? 
+ *       - Perform string parsing using std::string, but still trying to find a much quicker way to do this
  */
 
 int main(int argc, char** argv) { 
