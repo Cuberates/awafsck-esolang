@@ -2,12 +2,12 @@
 #include <gtest/gtest.h> 
 #include <limits>
 
-TEST(machine_init, init_default) { 
+TEST(machine, default_initialization) { 
   Machine machine; 
   EXPECT_TRUE(machine.get_pos() == 0u);
 }
 
-TEST(machine_command, increment_ptr_val) { 
+TEST(machine, increment_ptr_val) { 
   Machine machine;
   machine.increment(); 
   EXPECT_TRUE(machine.peek() == 1);
@@ -15,7 +15,7 @@ TEST(machine_command, increment_ptr_val) {
   EXPECT_TRUE(machine.peek() == 2);
 }
 
-TEST(machine_command, increment_ptr_val_wrap) { 
+TEST(machine, increment_ptr_val_wrap) { 
   Machine machine; 
   for (size_t counter{0}; counter < std::numeric_limits<uint8_t>::max(); counter++) {
     machine.increment();
@@ -25,7 +25,7 @@ TEST(machine_command, increment_ptr_val_wrap) {
   EXPECT_TRUE(machine.peek() == std::numeric_limits<uint8_t>::min());
 }
 
-TEST(machine_command, decrement_ptr_val) { 
+TEST(machine, decrement_ptr_val) { 
   Machine machine;
   machine.increment(); 
   EXPECT_TRUE(machine.peek() == 1);
@@ -33,14 +33,14 @@ TEST(machine_command, decrement_ptr_val) {
   EXPECT_TRUE(machine.peek() == 0);
 }
 
-TEST(machine_command, decrement_ptr_val_wrap) { 
+TEST(machine, decrement_ptr_val_wrap) { 
   Machine machine; 
   EXPECT_TRUE(machine.peek() == std::numeric_limits<uint8_t>::min());
   machine.decrement();
   EXPECT_TRUE(machine.peek() == std::numeric_limits<uint8_t>::max());
 }
 
-TEST(machine_comamnd, inst_ptr_shift_right) { 
+TEST(machine, inst_ptr_shift_right) { 
   Machine machine; 
   EXPECT_TRUE(machine.peek() == 0); 
   machine.increment(); 
@@ -49,7 +49,7 @@ TEST(machine_comamnd, inst_ptr_shift_right) {
   EXPECT_TRUE(machine.peek() == 0);
 }
 
-TEST(machine_comamnd, inst_ptr_shift_left) { 
+TEST(machine, inst_ptr_shift_left) { 
   Machine machine; 
   EXPECT_TRUE(machine.peek() == 0); 
   machine.increment(); 
@@ -61,7 +61,7 @@ TEST(machine_comamnd, inst_ptr_shift_left) {
   EXPECT_TRUE(machine.peek() == 1);
 }
 
-TEST(machine_command, inst_ptr_shift_right_wrap) { 
+TEST(machine, inst_ptr_shift_right_wrap) { 
   Machine machine; 
   for (size_t counter{0}; counter < (REGISTER_CAPACITY_MAX - 1); counter++) {
     machine.shift_right();
@@ -71,7 +71,7 @@ TEST(machine_command, inst_ptr_shift_right_wrap) {
   EXPECT_TRUE(machine.get_pos() == 0);
 }
 
-TEST(machine_command, inst_ptr_shift_left_wrap) { 
+TEST(machine, inst_ptr_shift_left_wrap) { 
   Machine machine; 
   machine.shift_left();
   EXPECT_TRUE(machine.get_pos() == REGISTER_CAPACITY_MAX-1);

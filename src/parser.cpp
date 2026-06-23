@@ -15,7 +15,7 @@ int main(int argc, char** argv) {
     return 1;
   }
   std::ifstream source_file(argv[1]);
-
+  
   if (!source_file.is_open()) { 
     throw std::runtime_error("Cannot read source_file");
     return 1; 

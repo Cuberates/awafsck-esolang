@@ -1,0 +1,86 @@
+#include "../lib/program.hpp"
+#include <array>
+#include <gtest/gtest.h> 
+
+TEST(program, default_init) { 
+  Program p; 
+  EXPECT_TRUE(p.size() == 0); 
+  EXPECT_THROW(Program::Instruction inst = p.peek(), std::runtime_error);
+}
+
+TEST(program, push_valid_instructions_updates_size_and_tail) { 
+  Program p; 
+  const std::array<Program::Instruction, 4> instructions {
+    Program::Instruction::INCREMENT,
+    Program::Instruction::DECREMENT,
+    Program::Instruction::SHIFT_PTR_LEFT,
+    Program::Instruction::SHIFT_PTR_RIGHT,
+  };
+
+  for (size_t index = 0; index < instructions.size(); ++index) {
+    p.push(instructions[index]);
+    EXPECT_EQ(p.size(), index + 1);
+    EXPECT_EQ(p.peek(), instructions[index]);
+  }
+}
+
+TEST(program, push_null_instruction_throws) {
+  Program p;
+
+  EXPECT_THROW(p.push(Program::Instruction::INSTRUCTION_NULL), std::runtime_error);
+  EXPECT_EQ(p.size(), 0);
+}
+
+TEST(program, indexed_peek_returns_instruction_at_requested_position) {
+  Program p;
+  const std::array<Program::Instruction, 4> instructions {
+    Program::Instruction::INCREMENT,
+    Program::Instruction::DECREMENT,
+    Program::Instruction::SHIFT_PTR_LEFT,
+    Program::Instruction::SHIFT_PTR_RIGHT,
+  };
+
+  for (const Program::Instruction instruction : instructions)
+    p.push(instruction);
+
+  for (size_t index = 0; index < instructions.size(); ++index)
+    EXPECT_EQ(p.peek(index), instructions[index]);
+}
+
+TEST(program, indexed_peek_throws_for_empty_or_out_of_range_position) {
+  Program p;
+
+  EXPECT_THROW(p.peek(0), std::runtime_error);
+
+  p.push(Program::Instruction::INCREMENT);
+  p.push(Program::Instruction::DECREMENT);
+
+  EXPECT_NO_THROW(p.peek(0));
+  EXPECT_NO_THROW(p.peek(1));
+  EXPECT_THROW(p.peek(2), std::runtime_error);
+  EXPECT_THROW(p.peek(99), std::runtime_error);
+}
+
+TEST(program, push_large_quantity_resizes_and_keeps_tail_accessible) {
+  Program p;
+  constexpr size_t instruction_count = 4097;
+  const std::array<Program::Instruction, 4> instructions {
+    Program::Instruction::INCREMENT,
+    Program::Instruction::DECREMENT,
+    Program::Instruction::SHIFT_PTR_LEFT,
+    Program::Instruction::SHIFT_PTR_RIGHT,
+  };
+
+  for (size_t index = 0; index < instruction_count; ++index) {
+    const Program::Instruction expected = instructions[index % instructions.size()];
+    p.push(expected);
+
+    EXPECT_EQ(p.size(), index + 1);
+    EXPECT_EQ(p.peek(), expected);
+  }
+}
+
+int main(void) { 
+  ::testing::InitGoogleTest(); 
+  return RUN_ALL_TESTS();    
+}
