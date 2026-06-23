@@ -5,7 +5,12 @@
 #include <vector>
 
 using Instruction = uint8_t;
- 
+
+/**
+ * @brief Program acts as a queue that contains atomic instructions for interacting with Machine
+ * @author Xuan Viet Duc Nguyen
+ * @todo Implement complete queue structure using std::vector, with fast pop() 
+ *  */ 
 class Program { 
   public: 
   
