@@ -19,8 +19,7 @@
  */
 
 namespace Brainfsck { 
-  void verify(const std::filesystem::path& file_path);
-  void parse(Program &program_, std::ifstream& source_file);
+  
   void run(const Program &program_, Machine &machine_); 
 };
 
