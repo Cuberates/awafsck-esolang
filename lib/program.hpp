@@ -16,8 +16,11 @@ class Program {
     INCREMENT, 
     DECREMENT, 
     SHIFT_PTR_LEFT, 
-    SHIFT_PTR_RIGHT, 
-    INSTRUCTION_NULL, 
+    SHIFT_PTR_RIGHT,
+    BEGIN_LOOP,
+    END_LOOP,
+    INSTRUCTION_NULL,
+    PRINT,  
   };
 
   Program();
