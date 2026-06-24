@@ -4,9 +4,10 @@
 #include <array> 
 #include <iostream>
 #include <cstdint>
+#include <string> 
 #include <limits>
 
-#define REGISTER_CAPACITY_MAX 256
+#define REGISTER_CAPACITY_MAX 16
 
 using Register = std::array<uint8_t, REGISTER_CAPACITY_MAX>; 
 
@@ -28,6 +29,8 @@ class Machine {
   void shift_left();
   void shift_right();
 
+  friend void out(const Machine& _machine);
+
   [[nodiscard]]
   const size_t& get_pos() const;              // Returning the current position of the pointer 
   [[nodiscard]]
@@ -45,8 +48,7 @@ Machine::Machine(const uint8_t& _initial_val) : _pos(0u) {
 Machine::Machine() : Machine(0u) {}
 
 void Machine::shift_right() {  
-  _pos = (_pos == (REGISTER_CAPACITY_MAX - 1) ? 0 : _pos + 1); 
-  
+  _pos = (_pos == (REGISTER_CAPACITY_MAX - 1) ? 0 : _pos + 1);  
 }
 
 void Machine::shift_left() {
@@ -69,6 +71,14 @@ const size_t& Machine::get_pos() const {
 
 const uint8_t& Machine::peek() const { 
   return *(_register.begin() + _pos);
+}
+
+void out(const Machine& _machine) { 
+  for(size_t cell{0}; cell < REGISTER_CAPACITY_MAX; ++cell) { 
+  std::cout << cell << "\t" << static_cast<unsigned>(_machine._register[cell]) << "\t"; 
+    if (cell == _machine._pos) std::cout << "*"; 
+    std::cout << std::endl; 
+  }
 }
 
 #endif 
