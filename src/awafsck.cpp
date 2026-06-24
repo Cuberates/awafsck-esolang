@@ -30,6 +30,7 @@ void Brainfsck::parse(Program &program_, std::ifstream& source_file) {
 
   /**
    * @bug Performance: Passing all entries from source_file into a std::vector and then process them later 
+   * @todo Create a stack frame?  
    * @todo Process each line entry, but the following parser model works? 
    * @author Xuan Viet Duc Nguyen
    */
@@ -50,11 +51,29 @@ void Brainfsck::parse(Program &program_, std::ifstream& source_file) {
    */
 }
 
-void Brainfsck::run(const Program &program_, Machine &machine) { 
+void Brainfsck::run(const Program &program, Machine &machine) { 
    /**
    * @todo Emulate Awa Brainfsck instructions HERE
    * @author Xuan Viet Duc Nguyen
    */ 
+
+  const size_t& program_size = program.size(); 
+  for(size_t p{0}; p < program_size; ++p) { 
+    const Program::Instruction& inst = program.peek(p);
+    switch (inst) { 
+      case Program::Instruction::INCREMENT:
+        machine.increment(); 
+        break; 
+      case Program::Instruction::DECREMENT:
+        machine.decrement(); 
+        break;
+      case Program::Instruction::SHIFT_PTR_LEFT:
+        machine.shift_left();
+        break;
+      case Program::Instruction::SHIFT_PTR_RIGHT:
+        machine.shift_right(); 
+        break; 
+    } 
 }
 
 int main(int argc, char** argv) { 
