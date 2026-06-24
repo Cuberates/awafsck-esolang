@@ -40,5 +40,5 @@ void Parser::parse(Program &program_, std::ifstream& source_file) {
     std::cout << lines[l] << "\n";
   }
 }
-#endif PARSE_H
+#endif PARSER_H
   
