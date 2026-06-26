@@ -14,51 +14,86 @@
 /**
  * @brief Complete file parser and code execution for organizing Awa syntaxes
  * @todo - Parse commands into program_ object 
- *       - Verify file extensions [x]
  *       - Perform string parsing using std::string, but still trying to find a much quicker way to do this
  * @author Xuan Viet Duc Nguyen
  */
 
 namespace Brainfsck {
-  void run(const Program &program_, Machine &machine_); 
+  void run(const Program &program, Machine &machine); 
 };
 
-void Brainfsck::run(const Program &program, Machine &machine) { 
-  /**
-   * @todo Emulate Awa Brainfsck instructions HERE
-   * @author Xuan Viet Duc Nguyen
-  `*/ 
+/**
+*  @todo Emulate Awa Brainfsck instructions HERE
+*  @author Xuan Viet Duc Nguyen
+*/
 
-  std::stack<size_t> stack_loop;
-  
-  for(size_t i {0}; i < program.size(); i++) { 
-    const Program::Instruction current_instruction = program.peek(i); 
-    
-    switch (current_instruction) {
-      case Program::Instruction::PRINT:             break; // TODO: CALL out(machine)
-      case Program::Instruction::INSTRUCTION_NULL:  break; // NOT SUPPOSED TO HAVE INSTRUCTION_NULL => HANDLE THIS ACCORDINGLY 
+void Brainfsck::run(const Program& program, Machine &machine) { 
+   std::stack<Program::Instruction> program_stack; 
+   for (size_t p {0}; p < program.size(); ++p) { 
+      Program::Instruction inst = program.peek(p); 
+      if (inst != Program::Instruction::END_LOOP) { 
+         program_stack.push(inst); 
+         continue; 
+      }
+      // pop until we detect BEGIN_LOOP; store intermediate values in the buffer;
+      std::stack<Program::Instruction> buffer;
+      //std::stack<Program::Instruction> cpy_buffer = buffer; 
+      
+      bool found_begin = false; 
 
-      case Program::Instruction::INCREMENT:         machine.increment(); break;
-      case Program::Instruction::DECREMENT:         machine.decrement(); break;
-      case Program::Instruction::SHIFT_PTR_LEFT:    machine.shift_left(); break;
-      case Program::Instruction::SHIFT_PTR_RIGHT:   machine.shift_right();  break; 
+      while (program_stack.empty() == false) { 
+         Program::Instruction lst = program_stack.top(); 
+         program_stack.pop(); 
+         if (lst == Program::Instruction::BEGIN_LOOP) { 
+            found_begin = true; 
+            break; 
+         }
+         buffer.push(lst);
+      }
+      std::stack<Program::Instruction> cpy_buffer = buffer;  
+      if (!found_begin) 
+         throw std::runtime_error("Error: Cannot locate BEGIN_LOOP instruction!");
+      
+      while (!buffer.empty()) { 
+         Program::Instruction lst = buffer.top();
+         buffer.pop();
+         program_stack.push(lst);
+      } 
+      
+      while (!cpy_buffer.empty()) { 
+         Program::Instruction lst = cpy_buffer.top(); 
+         cpy_buffer.pop(); 
+         program_stack.push(lst); 
+      }
+   }
+   std::stack<Program::Instruction> exec; 
 
-      case Program::Instruction::BEGIN_LOOP:        stack_loop.push(i); break;  
-
-      case Program::Instruction::END_LOOP:
-        if (stack_loop.empty()) 
-          throw std::runtime_error("Fatal Error: END_LOOP but stack_loop is empty. Bad syntax?");
-       
-        const size_t to_jump = stack_loop.top();
-        Program subprogram; 
-        for (size_t j {i-1}; j > to_jump; j--) {
-          subprogram.push(program.peek(j));
-        }        
-        run(subprogram, machine);
-        stack_loop.pop(); 
-        break;
-    }
-  }  
+   while (!program_stack.empty()) { 
+      Program::Instruction inst = program_stack.top(); 
+      program_stack.pop();
+      exec.push(inst);
+      /*
+      switch (inst) { 
+         case Program::Instruction::INCREMENT: machine.increment(); break; 
+         case Program::Instruction::DECREMENT: machine.decrement(); break; 
+         case Program::Instruction::SHIFT_PTR_LEFT: machine.shift_left(); break;
+         case Program::Instruction::SHIFT_PTR_RIGHT: machine.shift_right(); break; 
+      }*/
+   }
+   while (!exec.empty()) { 
+      Program::Instruction inst = exec.top(); 
+      exec.pop(); 
+      switch (inst) { 
+         case Program::Instruction::INCREMENT:
+            machine.increment(); break; 
+         case Program::Instruction::DECREMENT: 
+            machine.decrement(); break; 
+         case Program::Instruction::SHIFT_PTR_LEFT:
+            machine.shift_left(); break; 
+         case Program::Instruction::SHIFT_PTR_RIGHT: 
+            machine.shift_right(); break; 
+      }
+   }
 }
 
 #endif
