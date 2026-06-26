@@ -72,13 +72,6 @@ void Brainfsck::run(const Program& program, Machine &machine) {
       Program::Instruction inst = program_stack.top(); 
       program_stack.pop();
       exec.push(inst);
-      /*
-      switch (inst) { 
-         case Program::Instruction::INCREMENT: machine.increment(); break; 
-         case Program::Instruction::DECREMENT: machine.decrement(); break; 
-         case Program::Instruction::SHIFT_PTR_LEFT: machine.shift_left(); break;
-         case Program::Instruction::SHIFT_PTR_RIGHT: machine.shift_right(); break; 
-      }*/
    }
    while (!exec.empty()) { 
       Program::Instruction inst = exec.top(); 

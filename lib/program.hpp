@@ -13,14 +13,15 @@
 class Program { 
   public: 
   enum class Instruction { 
-    INCREMENT, 
-    DECREMENT, 
-    SHIFT_PTR_LEFT, 
-    SHIFT_PTR_RIGHT,
-    BEGIN_LOOP,
-    END_LOOP,
-    INSTRUCTION_NULL,
-    PRINT,  
+   INCREMENT, 
+   DECREMENT, 
+   SHIFT_PTR_LEFT, 
+   SHIFT_PTR_RIGHT,
+   BEGIN_LOOP,
+   END_LOOP,
+   INSTRUCTION_NULL,
+   PRINT, 
+
   };
 
   Program();
@@ -50,7 +51,6 @@ Program::Program(std::initializer_list<Program::Instruction> _instructions) : Pr
       push(inst);
    }
 }
-
 
 void Program::push(Instruction _inst) {   
   if (_inst == Program::Instruction::INSTRUCTION_NULL)
