@@ -11,17 +11,19 @@
 #include <iostream>
 #include <gtest/gtest.h>
 
-TEST(brainfsck, execute_program) { 
+
+TEST(brainfscks, single_static_for_loop) { 
   // Construct a program idk why I am using pointer
   Program *test_program = new Program(); 
   Machine *test_machine = new Machine(static_cast<uint8_t>(0u));
 
-  const std::array<Program::Instruction, 5> instructions {
-    Program::Instruction::SHIFT_PTR_RIGHT, // Pointer is now on cell 1
-    Program::Instruction::BEGIN_LOOP, // Start loop
-    Program::Instruction::INCREMENT, // Increment cell 1 by 1 (twice)
+  const std::array<Program::Instruction, 6> instructions {
+    Program::Instruction::BEGIN_LOOP, 
+    Program::Instruction::BEGIN_LOOP, // 
+    Program::Instruction::INCREMENT, // Increment cell 0 by 0 (twice) => 2
     Program::Instruction::END_LOOP,
-    Program::Instruction::PRINT, // Currently does nothing
+    Program::Instruction::END_LOOP, // Increment cell 0 by 0 => 4 
+    Program::Instruction::SHIFT_PTR_RIGHT, // Pointer should be in cell 1
   };
 
   for(size_t i {0}; i < instructions.size(); i++) { 
@@ -29,8 +31,7 @@ TEST(brainfsck, execute_program) {
   }
  
   Brainfsck::run(*test_program, *test_machine);
-  // out(*test_machine);  
-
+  out(*test_machine);
 
   free(test_program);
   free(test_machine);
