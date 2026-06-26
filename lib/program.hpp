@@ -37,7 +37,7 @@ class Program {
   private:
   size_t _inst_capacity; 
   size_t _inst_end;
-  std::vector<Instruction> _inst_list;
+   std::vector<Instruction> _inst_list;
 };
 
 Program::Program() : 
