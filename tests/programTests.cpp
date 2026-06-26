@@ -16,6 +16,16 @@ TEST(program, default_init) {
   EXPECT_THROW(static_cast<void>(p.peek()), std::runtime_error);
 }
 
+TEST(program,  init_list_init) {
+   Program p({
+      Program::Instruction::INCREMENT, 
+      Program::Instruction::DECREMENT, 
+   });
+   EXPECT_TRUE(p.size() == 2); 
+   EXPECT_TRUE(p.peek(0) == Program::Instruction::INCREMENT); 
+   EXPECT_TRUE(p.peek(1) == Program::Instruction::DECREMENT); 
+}
+
 TEST(program, push_valid_instructions_updates_size_and_tail) { 
   Program p; 
   const std::array<Program::Instruction, 7> instructions {

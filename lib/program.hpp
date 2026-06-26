@@ -24,6 +24,7 @@ class Program {
   };
 
   Program();
+  Program(std::initializer_list<Instruction> _instructions); 
   [[nodiscard]]
   const size_t size() const; 
   [[nodiscard]]
@@ -43,6 +44,13 @@ Program::Program() :
   _inst_end{0}, 
   _inst_list{std::vector<Instruction>(_inst_capacity)} 
 {}
+
+Program::Program(std::initializer_list<Program::Instruction> _instructions) : Program() {
+   for(auto& inst : _instructions) { 
+      push(inst);
+   }
+}
+
 
 void Program::push(Instruction _inst) {   
   if (_inst == Program::Instruction::INSTRUCTION_NULL)
