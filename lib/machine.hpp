@@ -35,6 +35,7 @@ class Machine {
   const size_t& get_pos() const;              // Returning the current position of the pointer 
   [[nodiscard]]
   const uint8_t& peek() const;                // Returning the value of the cell being pointed;  
+  const uint8_t& peek(size_t pos) const; 
 };
 
 /**
@@ -71,6 +72,9 @@ const size_t& Machine::get_pos() const {
 
 const uint8_t& Machine::peek() const { 
   return *(_register.begin() + _pos);
+}
+const uint8_t& Machine::peek(size_t pos) const { 
+   return * (_register.begin() + pos);
 }
 
 void out(const Machine& _machine) { 
