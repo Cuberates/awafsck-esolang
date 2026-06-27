@@ -105,6 +105,24 @@ TEST(brainfsck, nested_loops_are_preserved_by_initializer_list_constructor) {
   EXPECT_EQ(program.peek(5), Program::Instruction::SHIFT_PTR_RIGHT);
 }
 
+TEST(brainfsck, add_two_numbers) {
+   Program program;
+   Machine machine{0u}; 
+   for(int i = 0; i < 5; i++) { program.push(Program::Instruction::INCREMENT ); }
+   program.push(Program::Instruction::SHIFT_PTR_RIGHT);
+   for(int i = 0; i < 4; i++) { program.push(Program::Instruction::INCREMENT ); }
+   program.push(Program::Instruction::SHIFT_PTR_LEFT);
+   // pushing an adder
+   program.push(Program::Instruction::BEGIN_LOOP); 
+   program.push(Program::Instruction::DECREMENT);
+   program.push(Program::Instruction::SHIFT_PTR_RIGHT); 
+   program.push(Program::Instruction::INCREMENT);
+   program.push(Program::Instruction::SHIFT_PTR_LEFT);
+   program.push(Program::Instruction::END_LOOP);
+   Brainfsck::run(program, machine);
+   EXPECT_TRUE(machine.peek(1) == 9u);
+}
+
 int main(void) {
   ::testing::InitGoogleTest();
   return RUN_ALL_TESTS();
