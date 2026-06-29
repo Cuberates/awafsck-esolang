@@ -20,8 +20,7 @@ class Program {
    BEGIN_LOOP,
    END_LOOP,
    INSTRUCTION_NULL,
-   PRINT, 
-
+   PRINT,
   };
 
   Program();

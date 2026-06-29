@@ -4,7 +4,8 @@ CXXFLAGS = -Wall -g -std=c++2b -O0 -lgtest -lgtest_main
 SRC_MACHINE_TEST = tests/machineTests
 SRC_PROGRAM_TEST = tests/programTests
 SRC_BRAINFSCK_TEST = tests/brainFsckTests
-SRC = ${SRC_MACHINE_TEST} ${SRC_PROGRAM_TEST} ${SRC_BRAINFSCK_TEST}
+SRC = ${SRC_MACHINE_TEST} ${SRC_PROGRAM_TEST} ${SRC_BRAINFSCK_TEST} ${SRC_PARSER_TEST}
+
 
 build: 
 	${CXX} ${CXXFLAGS} ${GTEST_CFLAGS} ${SRC_MACHINE_TEST}.cpp -o ${SRC_MACHINE_TEST}.o
